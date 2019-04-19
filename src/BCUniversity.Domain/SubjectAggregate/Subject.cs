@@ -6,17 +6,18 @@ namespace BCUniversity.Domain.SubjectAggregate
     public class Subject: AggregateRoot
     {
         public string Name { get; private set; }
-        public List<Lecture> Lectures { get; private set; }
-        
-        public List<StudentEnrolment> StudentEnrolments { get; private set; }
 
-        public Subject(string name, List<Lecture> lectures, List<StudentEnrolment> studentEnrolments)
+        private readonly List<Lecture> _lectures;
+        
+        public IEnumerable<Lecture> Lectures => _lectures;
+
+        public IEnumerable<StudentEnrolment> StudentEnrolments { get; }
+
+        public Subject(string name, List<Lecture> lectures, IEnumerable<StudentEnrolment> studentEnrolments)
         {
-            Lectures = lectures;
             StudentEnrolments = studentEnrolments;
             Name = name;
+            _lectures = lectures;
         }
-
-        
     }
 }

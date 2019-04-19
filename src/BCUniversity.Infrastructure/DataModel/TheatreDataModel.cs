@@ -8,9 +8,9 @@ namespace BCUniversity.Infrastructure.DataModel
     [Table("theatre")]
     public class TheatreDataModel: EntityDataModelBase
     {
-        public string Name { get; private set; }
+        public string Name { get; set; }
         
-        public int Capacity { get; private set; }
+        public int Capacity { get; set; }
         
         public ICollection<LectureTheatreLink> Lectures { get; set; }
     }

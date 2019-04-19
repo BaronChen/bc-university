@@ -1,5 +1,5 @@
-using BCUniversity.Infrastructure.Subject;
-using BCUniversity.Service.Subject;
+using BCUniversity.Domain.SubjectAggregate;
+using BCUniversity.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BCUniversity.Infrastructure

@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
-using BCUniversity.Domain.Common;
 
-namespace BCUniversity.Service.Common
+namespace BCUniversity.Domain.Common
 {
     public interface IRepository<T> where T : AggregateRoot
     {

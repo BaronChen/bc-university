@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using BCUniversity.Domain.Common;
-using BCUniversity.Service.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace BCUniversity.Infrastructure.Common

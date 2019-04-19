@@ -24,7 +24,7 @@ namespace BCUniversity.Infrastructure.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("StudentName");
 
                     b.Property<string>("SubjectId");
 
@@ -72,7 +72,7 @@ namespace BCUniversity.Infrastructure.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("StudentName");
 
                     b.HasKey("Id");
 
@@ -84,7 +84,7 @@ namespace BCUniversity.Infrastructure.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("StudentName");
 
                     b.HasKey("Id");
 
@@ -98,7 +98,7 @@ namespace BCUniversity.Infrastructure.Migrations
 
                     b.Property<int>("Capacity");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("StudentName");
 
                     b.HasKey("Id");
 

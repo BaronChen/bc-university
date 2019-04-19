@@ -4,13 +4,13 @@ namespace BCUniversity.Domain.SubjectAggregate
 {
     public class StudentEnrolment: ValueObject
     {        
-        public string StudentId { get; private set; }
-        public string Name { get; private set; }
+        public string StudentId { get; }
+        public string StudentName { get; }
         
-        public StudentEnrolment(string studentId, string name)
+        public StudentEnrolment(string studentId, string studentName)
         {
             StudentId = studentId;
-            Name = name;
+            StudentName = studentName;
         }
     }
 }

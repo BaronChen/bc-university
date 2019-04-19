@@ -6,25 +6,25 @@ using BCUniversity.Domain.SubjectAggregate;
 using BCUniversity.Infrastructure.Common;
 using BCUniversity.Infrastructure.DataModel;
 using BCUniversity.Infrastructure.DataModel.Relationships;
-using BCUniversity.Service.Subject;
 using Microsoft.EntityFrameworkCore;
 
-namespace BCUniversity.Infrastructure.Subject
+namespace BCUniversity.Infrastructure.Repositories
 {
-    public class SubjectRepository: RepositoryBase<Domain.SubjectAggregate.Subject>, ISubjectRepository
+    public class SubjectRepository: RepositoryBase<Subject>, ISubjectRepository
     {
         public SubjectRepository(UniversityContext dbContext) : base(dbContext)
         {
         }
 
-        public override async Task Save(Domain.SubjectAggregate.Subject subject)
+        public override async Task Save(Subject subject)
         {
-            SubjectDataModel subjectDataModel;
+            SubjectDataModel subjectDataModel = null;
             if (!string.IsNullOrWhiteSpace(subject.Id))
             {
                 subjectDataModel = await _dbContext.Subjects.SingleOrDefaultAsync(x => x.Id == subject.Id);
             }
-            else
+            
+            if (subjectDataModel == null)
             {
                 subjectDataModel = new SubjectDataModel()
                 {
@@ -38,18 +38,12 @@ namespace BCUniversity.Infrastructure.Subject
             var lectures = GetLectureDataModels(subject, lecturesDataModelById);
 
             subjectDataModel.Lectures = lectures;
-            subjectDataModel.StudentLinks = subject.StudentEnrolments.Select(x => new SubjectStudentLink()
-            {
-                StudentId = x.StudentId,
-                SubjectId = subject.Id
-            }).ToList();
-
+            
             _dbContext.Update(subjectDataModel);
-
             await _dbContext.SaveChangesAsync();
         }
 
-        public override async Task<Domain.SubjectAggregate.Subject> GetById(string id)
+        public override async Task<Subject> GetById(string id)
         {
             var dataModel = await _dbContext.Subjects.SingleOrDefaultAsync(x => x.Id == id);
 
@@ -70,13 +64,13 @@ namespace BCUniversity.Infrastructure.Subject
             var studentEnrolments =
                 dataModel.StudentLinks.Select(x => new StudentEnrolment(x.Student.Id, x.Student.Name)).ToList();
 
-            var subject = new Domain.SubjectAggregate.Subject(dataModel.Name, lectures, studentEnrolments);
+            var subject = new Subject(dataModel.Name, lectures, studentEnrolments);
 
             return subject;
         }
         
         private static List<LectureDataModel> GetLectureDataModels(
-            Domain.SubjectAggregate.Subject subject,
+            Subject subject,
             Dictionary<string, LectureDataModel> lecturesDataModelById
         )
         {

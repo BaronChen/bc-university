@@ -6,12 +6,12 @@ namespace BCUniversity.Domain.SubjectAggregate
 {
     public class LectureSchedule: ValueObject
     {        
-        public int DayOfWeek { get; private set; }
+        public int DayOfWeek { get; }
         
-        public int StartHour { get; private set; }
-        public int EndHour { get; private set; }
+        public int StartHour { get; }
+        public int EndHour { get; }
         
-        public TheatreReference Theatre { get; private set; }
+        public TheatreReference Theatre { get; }
 
         public LectureSchedule(TheatreReference theatre, int dayOfWeek,
             int startHour, int endHour)
