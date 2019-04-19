@@ -4,4 +4,13 @@
         <TargetFramework>netcoreapp2.2</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="LectureTheatre" />
+      <Folder Include="Student" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BCUniversity.Domain\BCUniversity.Domain.csproj" />
+    </ItemGroup>
+
 </Project>

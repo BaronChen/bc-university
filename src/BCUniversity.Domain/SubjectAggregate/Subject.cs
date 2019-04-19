@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using BCUniversity.Domain.Common;
-using BCUniversity.Domain.SubjectAggregate.ValueObjects;
 
 namespace BCUniversity.Domain.SubjectAggregate
 {

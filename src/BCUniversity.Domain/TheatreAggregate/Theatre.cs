@@ -1,14 +1,14 @@
 using BCUniversity.Domain.Common;
 
-namespace BCUniversity.Domain.LectureTheatreAggregate
+namespace BCUniversity.Domain.TheatreAggregate
 {
-    public class LectureTheatre: AggregateRoot
+    public class Theatre: AggregateRoot
     {
         public string Name { get; private set; }
         
         public int Capacity { get; private set; }
         
-        public LectureTheatre(string name, int capacity)
+        public Theatre(string name, int capacity)
         {
             Name = name;
             Capacity = capacity;

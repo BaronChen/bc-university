@@ -1,30 +1,29 @@
 using System;
 using System.Collections.Generic;
 using BCUniversity.Domain.Common;
-using BCUniversity.Domain.SubjectAggregate.ValueObjects;
 
 namespace BCUniversity.Domain.SubjectAggregate
 {
+    /*
+     * We could argue lecture schedule is a ValueObject.
+     * However, I still think it is more appropriate for it to be an entity
+     */
     public class LectureSchedule: Entity
-    {
-        public string Name { get; private set; }
+    {        
+        public int DayOfWeek { get; private set; }
         
-        public int DayInWeek { get; private set; }
+        public int StartHour { get; private set; }
+        public int EndHour { get; private set; }
         
-        /* *
-         * as timetable clashed is not in the requirement,
-         * I will just use a total hour here instead of custom time object for start and end time
-         * */ 
-        public decimal Hours { get; private set; }
-        
-        public List<TheatreReference> Theatres { get; private set; }
+        public TheatreReference Theatre { get; private set; }
 
-        public LectureSchedule(string name, List<TheatreReference> theatres, decimal hours, int dayInWeek)
+        public LectureSchedule(TheatreReference theatre, int dayOfWeek,
+            int startHour, int endHour)
         {
-            Theatres = theatres;
-            Hours = hours;
-            DayInWeek = dayInWeek;
-            Name = name;
+            Theatre = theatre;
+            DayOfWeek = dayOfWeek;
+            StartHour = startHour;
+            EndHour = endHour;
         }
     }
 }
