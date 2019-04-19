@@ -1,16 +1,16 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using BCUniversity.Infrastructure.DataModel.Common;
 
-namespace BCUniversity.Infrastructure.DataModel
+namespace BCUniversity.Infrastructure.DataModel.Relationships
 {
-    [Table("lecture_schedule")]
-    public class LectureScheduleDataModel: EntityDataModelBase
+    [Table("lecture_theatre_relationship")]
+    public class LectureTheatreLink
     {        
-        public int DayOfWeek { get; private set; }
+        public int DayOfWeek { get; set; }
         
-        public int StartHour { get; private set; }
+        public int StartHour { get; set; }
         
-        public int EndHour { get; private set; }
+        public int EndHour { get; set; }
         
         public string TheatreId { get; set; }
         

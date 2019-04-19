@@ -10,6 +10,8 @@ namespace BCUniversity.Infrastructure.DataModel
     {
         public string Name { get; set; }
         
+        public ICollection<LectureDataModel> Lectures { get; set; }
+        
         public ICollection<SubjectStudentLink> StudentLinks { get; set; } 
     }
 }

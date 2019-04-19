@@ -4,11 +4,7 @@ using BCUniversity.Domain.Common;
 
 namespace BCUniversity.Domain.SubjectAggregate
 {
-    /*
-     * We could argue lecture schedule is a ValueObject.
-     * However, I still think it is more appropriate for it to be an entity
-     */
-    public class LectureSchedule: Entity
+    public class LectureSchedule: ValueObject
     {        
         public int DayOfWeek { get; private set; }
         

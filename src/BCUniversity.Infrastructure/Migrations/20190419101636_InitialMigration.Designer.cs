@@ -9,13 +9,14 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BCUniversity.Infrastructure.Migrations
 {
     [DbContext(typeof(UniversityContext))]
-    [Migration("20190419075430_InitialMigration")]
+    [Migration("20190419101636_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasDefaultSchema("uni")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
                 .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
@@ -27,33 +28,32 @@ namespace BCUniversity.Infrastructure.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<string>("SubjectId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("SubjectId");
 
                     b.ToTable("lecture");
                 });
 
-            modelBuilder.Entity("BCUniversity.Infrastructure.DataModel.LectureScheduleDataModel", b =>
+            modelBuilder.Entity("BCUniversity.Infrastructure.DataModel.Relationships.LectureTheatreLink", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<string>("LectureId");
+
+                    b.Property<string>("TheatreId");
 
                     b.Property<int>("DayOfWeek");
 
                     b.Property<int>("EndHour");
 
-                    b.Property<string>("LectureId");
-
                     b.Property<int>("StartHour");
 
-                    b.Property<string>("TheatreId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LectureId");
+                    b.HasKey("LectureId", "TheatreId");
 
                     b.HasIndex("TheatreId");
 
-                    b.ToTable("lecture_schedule");
+                    b.ToTable("lecture_theatre_relationship");
                 });
 
             modelBuilder.Entity("BCUniversity.Infrastructure.DataModel.Relationships.SubjectStudentLink", b =>
@@ -107,15 +107,24 @@ namespace BCUniversity.Infrastructure.Migrations
                     b.ToTable("theatre");
                 });
 
-            modelBuilder.Entity("BCUniversity.Infrastructure.DataModel.LectureScheduleDataModel", b =>
+            modelBuilder.Entity("BCUniversity.Infrastructure.DataModel.LectureDataModel", b =>
+                {
+                    b.HasOne("BCUniversity.Infrastructure.DataModel.SubjectDataModel", "Subject")
+                        .WithMany("Lectures")
+                        .HasForeignKey("SubjectId");
+                });
+
+            modelBuilder.Entity("BCUniversity.Infrastructure.DataModel.Relationships.LectureTheatreLink", b =>
                 {
                     b.HasOne("BCUniversity.Infrastructure.DataModel.LectureDataModel", "Lecture")
-                        .WithMany("LectureSchedules")
-                        .HasForeignKey("LectureId");
+                        .WithMany("LectureTheatreLinks")
+                        .HasForeignKey("LectureId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("BCUniversity.Infrastructure.DataModel.TheatreDataModel", "Theatre")
-                        .WithMany("LectureSchedules")
-                        .HasForeignKey("TheatreId");
+                        .WithMany("Lectures")
+                        .HasForeignKey("TheatreId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("BCUniversity.Infrastructure.DataModel.Relationships.SubjectStudentLink", b =>

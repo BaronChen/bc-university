@@ -13,7 +13,6 @@ namespace BCUniversity.Infrastructure.Common
         private readonly string _connectionString;
         public DbSet<SubjectDataModel> Subjects { get; set; }
         public DbSet<LectureDataModel> Lectures { get; set; }
-        public DbSet<LectureScheduleDataModel> LectureSchedules { get; set; }
         public DbSet<TheatreDataModel> Theatres { get; set; }
         public DbSet<StudentDataModel> Students { get; set; }
         
@@ -29,6 +28,7 @@ namespace BCUniversity.Infrastructure.Common
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasDefaultSchema("uni");
             modelBuilder.Entity<SubjectStudentLink>()
                 .HasKey(x => new { x.SubjectId, x.StudentId });  
             modelBuilder.Entity<SubjectStudentLink>()
@@ -40,15 +40,21 @@ namespace BCUniversity.Infrastructure.Common
                 .WithMany(x => x.SubjectLinks)
                 .HasForeignKey(x => x.StudentId);
 
-            modelBuilder.Entity<LectureScheduleDataModel>()
+            modelBuilder.Entity<LectureTheatreLink>()
+                .HasKey(x => new { x.LectureId, x.TheatreId });  
+            modelBuilder.Entity<LectureTheatreLink>()
                 .HasOne(x => x.Lecture)
-                .WithMany(x => x.LectureSchedules)
+                .WithMany(x => x.LectureTheatreLinks)
                 .HasForeignKey(x => x.LectureId);
-            
-            modelBuilder.Entity<LectureScheduleDataModel>()
+            modelBuilder.Entity<LectureTheatreLink>()
                 .HasOne(x => x.Theatre)
-                .WithMany(x => x.LectureSchedules)
+                .WithMany(x => x.Lectures)
                 .HasForeignKey(x => x.TheatreId);
+            
+            modelBuilder.Entity<LectureDataModel>()
+                .HasOne(x => x.Subject)
+                .WithMany(x => x.Lectures)
+                .HasForeignKey(x => x.SubjectId);
         }
     }
 }

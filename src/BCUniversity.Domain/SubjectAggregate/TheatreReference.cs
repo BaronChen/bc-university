@@ -7,9 +7,9 @@ namespace BCUniversity.Domain.SubjectAggregate
         public string TheatreId { get; private set; }
         public string Name { get; private set; }
         
-        public string Capacity { get; private set; }
+        public int Capacity { get; private set; }
         
-        public TheatreReference(string theatreId, string name, string capacity)
+        public TheatreReference(string theatreId, string name, int capacity)
         {
             TheatreId = theatreId;
             Name = name;
