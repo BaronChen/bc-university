@@ -7,6 +7,8 @@ namespace BCUniversity.Domain.SubjectAggregate
         public string StudentId { get; }
         public string StudentName { get; }
         
+        
+        
         public StudentEnrolment(string studentId, string studentName)
         {
             StudentId = studentId;

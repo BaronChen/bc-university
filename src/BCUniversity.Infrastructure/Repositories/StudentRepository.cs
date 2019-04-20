@@ -22,7 +22,7 @@ namespace BCUniversity.Infrastructure.Repositories
             StudentDataModel studentDataModel = null;
             if (!string.IsNullOrWhiteSpace(student.Id))
             {
-                studentDataModel = await _dbContext.Students.SingleOrDefaultAsync(x => x.Id == student.Id);
+                studentDataModel = await GetBaseQuery().SingleOrDefaultAsync(x => x.Id == student.Id);
             }
             
             if (studentDataModel == null)
@@ -62,7 +62,11 @@ namespace BCUniversity.Infrastructure.Repositories
         
         private IQueryable<StudentDataModel> GetBaseQuery()
         {
-            return _dbContext.Students.Include(x => x.SubjectLinks);
+            return _dbContext.Students
+                .Include(x => x.SubjectLinks)
+                .ThenInclude(x => x.Subject)
+                .ThenInclude(x => x.Lectures)
+                .ThenInclude(x => x.LectureTheatreLink);
         }
     }
 }

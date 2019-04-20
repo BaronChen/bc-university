@@ -8,9 +8,12 @@ namespace BCUniversity.Domain.StudentAggregate
         
         public string SubjectName { get; }
         
-        public SubjectEnrolment(string subjectId, string subjectName)
+        public int SubjectHours { get; }
+        
+        public SubjectEnrolment(string subjectId, string subjectName, int subjectHours)
         {
             SubjectId = subjectId;
+            SubjectHours = subjectHours;
             SubjectName = subjectName;
         }
     }

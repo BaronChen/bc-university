@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BCUniversity.Api.Common;
+using BCUniversity.Domain;
 using BCUniversity.Infrastructure;
 using BCUniversity.Infrastructure.Common;
 using BCUniversity.Service;
@@ -33,6 +35,8 @@ namespace BCUniversity.Api
             {
                 options.ConnectionString = Configuration.GetSection("Postgres:ConnectionString").Value;
             });
+            
+            services.RegisterDomainServices();
             services.RegisterService();
             services.RegisterInfrastructure();
         }
@@ -50,6 +54,7 @@ namespace BCUniversity.Api
                 app.UseHsts();
             }
 
+            app.UseMiddleware<ErrorHandler>();
             app.UseHttpsRedirection();
             app.UseMvc();
         }

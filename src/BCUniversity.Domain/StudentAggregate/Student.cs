@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BCUniversity.Domain.Common;
+using BCUniversity.Domain.Exceptions;
 
 namespace BCUniversity.Domain.StudentAggregate
 {
@@ -19,19 +20,15 @@ namespace BCUniversity.Domain.StudentAggregate
             _subjectEnrolments = subjectEnrolments;
         }
 
-        public void EnrolToSubject(string subjectId)
+        public void EnrolInSubject(SubjectEnrolment subjectEnrolment)
         {
-            if (string.IsNullOrWhiteSpace(subjectId))
-            {
-                throw new ArgumentException("Invalid subject Id");
-            }
+            var currentTotalSubjectHour = SubjectEnrolments.Sum(x => x.SubjectHours);
 
-            if (_subjectEnrolments.Any(x => x.SubjectId == subjectId))
+            if (currentTotalSubjectHour + subjectEnrolment.SubjectHours > 10)
             {
-                return;
+                throw new DomainValidationException("Subject hour longer than 10 per week.");
             }
-            
-            _subjectEnrolments.Add(new SubjectEnrolment(subjectId, ""));
+            _subjectEnrolments.Add(subjectEnrolment);
         }
     }
 }

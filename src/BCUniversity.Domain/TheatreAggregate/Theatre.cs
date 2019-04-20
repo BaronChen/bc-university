@@ -1,4 +1,6 @@
+using System;
 using BCUniversity.Domain.Common;
+using BCUniversity.Domain.Exceptions;
 
 namespace BCUniversity.Domain.TheatreAggregate
 {
@@ -11,6 +13,10 @@ namespace BCUniversity.Domain.TheatreAggregate
         public Theatre(string id, string name, int capacity) : base(id)
         {
             Name = name;
+            if (capacity <= 0)
+            {
+                throw new DomainValidationException("Invalid capacity for theatre");
+            }
             Capacity = capacity;
         }
     }

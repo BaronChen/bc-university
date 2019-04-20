@@ -22,7 +22,7 @@ namespace BCUniversity.Infrastructure.Repositories
             SubjectDataModel subjectDataModel = null;
             if (!string.IsNullOrWhiteSpace(subject.Id))
             {
-                subjectDataModel = await _dbContext.Subjects.SingleOrDefaultAsync(x => x.Id == subject.Id);
+                subjectDataModel = await GetBaseQuery().SingleOrDefaultAsync(x => x.Id == subject.Id);
             }
             
             if (subjectDataModel == null)
@@ -33,9 +33,8 @@ namespace BCUniversity.Infrastructure.Repositories
                 };
             }
 
-            var lecturesDataModelById = subjectDataModel.Lectures?.ToDictionary(x => x.Id) ??
-                                        new Dictionary<string, LectureDataModel>();
-
+            var lecturesDataModelById = subjectDataModel.Lectures.ToDictionary(x => x.Id);
+            
             var lectures = GetLectureDataModels(subject, lecturesDataModelById);
 
             subjectDataModel.Lectures = lectures;

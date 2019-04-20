@@ -4,8 +4,6 @@ namespace BCUniversity.Service.Subjects.Dtos
 {
     public class SubjectRequestDto
     {        
-        public string Name { get; set; }
-        
-        public IEnumerable<LectureRequestDto> Lectures { get; set; }
+        public string Name { get; set; }        
     }
 }

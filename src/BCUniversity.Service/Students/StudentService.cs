@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BCUniversity.Domain.DomainService;
 using BCUniversity.Domain.StudentAggregate;
 using BCUniversity.Service.Students.Dtos;
 
@@ -9,12 +10,13 @@ namespace BCUniversity.Service.Students
     internal class StudentService: IStudentService
     {
         private readonly IStudentRepository _studentRepository;
+        private readonly IUniversityDomainService _universityDomainService;
        
 
-        public StudentService(IStudentRepository studentRepository)
+        public StudentService(IStudentRepository studentRepository, IUniversityDomainService universityDomainService)
         {
             _studentRepository = studentRepository;
-          
+            _universityDomainService = universityDomainService;
         }
         
         public async Task<IEnumerable<Student>> GetStudents()
@@ -34,6 +36,13 @@ namespace BCUniversity.Service.Students
            var id = await _studentRepository.Save(student);
 
            return id;
+        }
+
+        public async Task<Student> EnrolStudentToSubject(EnrolmentDto dto)
+        {
+            await _universityDomainService.EnrolStudentToSubject(dto.StudentId, dto.SubjectId);
+
+            return await _studentRepository.GetById(dto.StudentId);
         }
     }
 }

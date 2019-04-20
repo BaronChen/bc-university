@@ -39,5 +39,13 @@ namespace BCUniversity.Api.University.Students
             var result = await _studentService.CreateStudent(requestDto);
             return Ok(new { Id = result });
         }
+        
+        [HttpPost]
+        [Route("{id}/")]
+        public async Task<IActionResult> Enrol([FromBody]StudentRequestDto requestDto)
+        {
+            var result = await _studentService.CreateStudent(requestDto);
+            return Ok(new { Id = result });
+        }
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using BCUniversity.Domain.Common;
 
 namespace BCUniversity.Domain.SubjectAggregate
@@ -19,6 +20,21 @@ namespace BCUniversity.Domain.SubjectAggregate
             StudentEnrolments = studentEnrolments;
             Name = name;
             _lectures = lectures;
+        }
+
+        public int GetTotalHours()
+        {
+            return Lectures.Sum(l => l.GetLectureHours());
+        }
+
+        public bool HasCapacity()
+        {
+            return StudentEnrolments.Count() < Lectures.Min(l => l.GetCapacity());
+        }
+
+        public void AddLecture(Lecture lecture)
+        {
+            _lectures.Add(lecture);
         }
     }
 }

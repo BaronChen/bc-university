@@ -13,5 +13,9 @@ namespace BCUniversity.Service.Subjects
 
         Task<string> CreateSubject(SubjectRequestDto requestDto);
 
+        Task CreateLectureForSubject(string subjectId, LectureRequestDto requestDto);
+
+        Task<IEnumerable<Lecture>> GetLecturesForSubject(string subjectId);
+
     }
 }

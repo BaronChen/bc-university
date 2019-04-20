@@ -39,6 +39,22 @@ namespace BCUniversity.Api.University.Subjects
             var result = await _subjectService.CreateSubject(requestDto);
             return Ok(new { Id = result });
         }
+        
+        [HttpGet]
+        [Route("{id}/lectures")]
+        public async Task<IActionResult> GetLectures([FromRoute]string id)
+        {
+            var result = await _subjectService.GetLecturesForSubject(id);
+            return Ok(result);
+        }
+        
+        [HttpPost]
+        [Route("{id}/lectures")]
+        public async Task<IActionResult> AddLecture([FromRoute]string id, [FromBody]LectureRequestDto requestDto)
+        {
+            await _subjectService.CreateLectureForSubject(id, requestDto);
+            return Ok();
+        }
 
     }
 }
