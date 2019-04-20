@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using BCUniversity.Domain.Common;
 using BCUniversity.Domain.Exceptions;
+using BCUniversity.Domain.StudentAggregate.Events;
 
 namespace BCUniversity.Domain.StudentAggregate
 {
     public class Student: AggregateRoot
     {
         public string Name { get; private set; }
-
 
         private readonly List<SubjectEnrolment> _subjectEnrolments;
         public IEnumerable<SubjectEnrolment> SubjectEnrolments => _subjectEnrolments;
@@ -28,7 +28,23 @@ namespace BCUniversity.Domain.StudentAggregate
             {
                 throw new DomainValidationException("Subject hour longer than 10 per week.");
             }
-            _subjectEnrolments.Add(subjectEnrolment);
+
+            if (_subjectEnrolments.All(x => x.SubjectId != subjectEnrolment.SubjectId))
+            {
+                _subjectEnrolments.Add(subjectEnrolment);
+                RaiseDomainEvent(new StudentEnrolledEvent()
+                {
+                    StudentId = Id,
+                    StudentName = Name,
+                    SubjectId = subjectEnrolment.SubjectId,
+                    SubjectName = subjectEnrolment.SubjectName
+                });
+            }
+            else
+            {
+                throw new DomainValidationException("Student already enrolled in subject.");
+            }
+            
         }
     }
 }

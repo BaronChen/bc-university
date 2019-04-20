@@ -1,9 +1,27 @@
+using System.Collections.Generic;
+using System.Linq;
+using BCUniversity.Domain.Common.Events;
+
 namespace BCUniversity.Domain.Common
 {
-    public class AggregateRoot : Entity
+    public abstract class AggregateRoot : Entity
     {
-        public AggregateRoot(string id) : base(id)
+        private readonly List<DomainEvent> _domainEvents;
+        
+        protected AggregateRoot(string id) : base(id)
         {
+            _domainEvents = new List<DomainEvent>();
         }
+
+        protected void RaiseDomainEvent(DomainEvent domainEvent)
+        {
+            _domainEvents.Add(domainEvent);
+        }
+
+        public IEnumerable<DomainEvent> GetDomainEvents()
+        {
+            return _domainEvents.ToList();
+        }
+        
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BCUniversity.Domain.Common.Events;
 using BCUniversity.Domain.TheatreAggregate;
 using BCUniversity.Infrastructure.Common;
 using BCUniversity.Infrastructure.DataModel;
@@ -12,7 +13,8 @@ namespace BCUniversity.Infrastructure.Repositories
 {
     public class TheatreRepository: RepositoryBase<Theatre>, ITheatreRepository
     {
-        public TheatreRepository(UniversityContext dbContext) : base(dbContext)
+        public TheatreRepository(UniversityContext dbContext, IDomainEventDispatcher domainEventDispatcher) 
+            : base(dbContext, domainEventDispatcher)
         {
         }
 
@@ -35,6 +37,8 @@ namespace BCUniversity.Infrastructure.Repositories
 
             _dbContext.Theatres.Update(theatreDataModel);
             await _dbContext.SaveChangesAsync();
+            
+            await DispatchEvents(theatre);
             return theatreDataModel.Id;
         }
 

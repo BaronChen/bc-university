@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BCUniversity.Domain.Common.Events;
 using BCUniversity.Domain.SubjectAggregate;
 using BCUniversity.Infrastructure.Common;
 using BCUniversity.Infrastructure.DataModel;
@@ -13,7 +14,8 @@ namespace BCUniversity.Infrastructure.Repositories
 {
     public class SubjectRepository: RepositoryBase<Subject>, ISubjectRepository
     {
-        public SubjectRepository(UniversityContext dbContext) : base(dbContext)
+        public SubjectRepository(UniversityContext dbContext, IDomainEventDispatcher domainEventDispatcher) 
+            : base(dbContext, domainEventDispatcher)
         {
         }
 
@@ -42,6 +44,8 @@ namespace BCUniversity.Infrastructure.Repositories
             
             _dbContext.Update(subjectDataModel);
             await _dbContext.SaveChangesAsync();
+            
+            await DispatchEvents(subject);
             return subjectDataModel.Id;
         }
 
