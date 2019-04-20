@@ -1,9 +1,7 @@
-using BCUniversity.Domain.StudentAggregate;
-using BCUniversity.Domain.TheatreAggregate;
+using System.Collections.Generic;
 using BCUniversity.Infrastructure.DataModel;
 using BCUniversity.Infrastructure.DataModel.Relationships;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 
@@ -52,6 +50,13 @@ namespace BCUniversity.Infrastructure.Common
                 .HasOne(x => x.Subject)
                 .WithMany(x => x.Lectures)
                 .HasForeignKey(x => x.SubjectId);
+            
+            SeedData(modelBuilder);
+        }
+
+        protected void SeedData(ModelBuilder modelBuilder)
+        {
+           SeedDataFactory.SeedData(modelBuilder);
         }
     }
 }

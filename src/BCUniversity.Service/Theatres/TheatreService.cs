@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using BCUniversity.Domain.TheatreAggregate;
 using BCUniversity.Service.Dtos;
 using BCUniversity.Service.Dtos.Requests;
+using BCUniversity.Service.Exceptions;
 
 namespace BCUniversity.Service.Theatres
 {
@@ -32,7 +33,13 @@ namespace BCUniversity.Service.Theatres
 
         public async Task<TheatreDto> GetTheatre(string id)
         {
-            return (await _theatreRepository.GetById(id)).ToTheatreDto();
+            var theatre = await _theatreRepository.GetById(id);
+            if (theatre == null)
+            {
+                throw new ResourceNotFoundException($"Theatre id {id} not found.");
+            }
+            
+            return theatre.ToTheatreDto();
         }
     }
 }

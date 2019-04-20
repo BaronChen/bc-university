@@ -28,7 +28,12 @@ namespace BCUniversity.Service.Students
 
         public async Task<StudentDto> GetStudent(string id)
         {
-            return (await _studentRepository.GetById(id)).ToStudentDto();
+            var student = await _studentRepository.GetById(id);
+            if (student == null)
+            {
+                throw new ResourceNotFoundException($"Student id {id} not found.");
+            }
+            return student.ToStudentDto();
         }
 
         public async Task<string> CreateStudent(StudentRequestDto requestDto)

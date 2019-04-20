@@ -38,7 +38,8 @@ namespace BCUniversity.Service.Subjects
 
         public async Task<SubjectDto> GetSubjectById(string id)
         {
-            return (await _subjectRepository.GetById(id)).ToSubjectDto();
+            var subject = await GetSubject(id);
+            return subject.ToSubjectDto();
         }
 
         public async Task<string> CreateSubject(SubjectRequestDto requestDto)
