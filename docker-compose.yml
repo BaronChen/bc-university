@@ -7,3 +7,15 @@ services:
       - 5432:5432
     env_file:
       - dev.env
+  api:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    working_dir: /app
+    entrypoint: "./seedAndRun.sh"
+    depends_on:
+      - db
+    ports:
+      - "5000:5000"
+    env_file:
+      - dev.env

@@ -33,7 +33,10 @@ namespace BCUniversity.Api
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.Configure<DbSettings>(options =>
             {
-                options.ConnectionString = Configuration.GetSection("Postgres:ConnectionString").Value;
+                var envConnectionString = Environment.GetEnvironmentVariable("POSTGRES_CONNECTIONSTRING");
+                options.ConnectionString = !string.IsNullOrWhiteSpace(envConnectionString)
+                    ? envConnectionString
+                    : Configuration.GetSection("Postgres:ConnectionString").Value;
             });
             
             services.RegisterDomainServices();
