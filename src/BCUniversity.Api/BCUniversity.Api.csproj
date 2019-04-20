@@ -16,8 +16,4 @@
       <ProjectReference Include="..\BCUniversity.Service\BCUniversity.Service.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="University" />
-    </ItemGroup>
-
 </Project>

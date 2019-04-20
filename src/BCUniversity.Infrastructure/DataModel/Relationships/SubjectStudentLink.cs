@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BCUniversity.Infrastructure.DataModel.Relationships
@@ -9,10 +10,12 @@ namespace BCUniversity.Infrastructure.DataModel.Relationships
     [Table("subject_student_relationship")]
     public class SubjectStudentLink
     {
+        [Required]
         public string StudentId { get; set; }
         
         public StudentDataModel Student { get; set; }
         
+        [Required]
         public string SubjectId { get; set; }
         
         public SubjectDataModel Subject { get; set; }

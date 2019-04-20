@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using BCUniversity.Domain.StudentAggregate;
 using BCUniversity.Domain.SubjectAggregate;
@@ -17,17 +18,23 @@ namespace BCUniversity.Infrastructure.Repositories.Extensions
             
             var lectures = dataModel.Lectures.Select(l =>
             {
-                var lectureSchedules = l.LectureTheatreLinks.Select(x =>
-                    new LectureSchedule(new TheatreReference(x.TheatreId, x.Theatre.Name, x.Theatre.Capacity),
-                        x.DayOfWeek, x.StartHour, x.EndHour)).ToList();
+                var theatreLink = l.LectureTheatreLink;
+                var lectureSchedules = new LectureSchedule(
+                    new TheatreReference(
+                        theatreLink.TheatreId, 
+                        theatreLink.Theatre.Name, 
+                        theatreLink.Theatre.Capacity),
+                    theatreLink.DayOfWeek, 
+                    theatreLink.StartHour, 
+                    theatreLink.EndHour);
 
-                return new Lecture(l.Name, lectureSchedules);
+                return new Lecture(l.Id, l.Name, lectureSchedules);
             }).ToList();
 
             var studentEnrolments =
                 dataModel.StudentLinks.Select(x => new StudentEnrolment(x.Student.Id, x.Student.Name)).ToList();
 
-            var subject = new Subject(dataModel.Name, lectures, studentEnrolments);
+            var subject = new Subject(dataModel.Id, dataModel.Name, lectures, studentEnrolments);
             return subject;
         }
         
@@ -37,10 +44,11 @@ namespace BCUniversity.Infrastructure.Repositories.Extensions
             {
                 return null;
             }
-            
+
             var subjectEnrolments =
-                studentDataModel.SubjectLinks.Select(x => new SubjectEnrolment(x.SubjectId, x.Subject.Name)).ToList();
-            var student = new Student(studentDataModel.Name, subjectEnrolments);
+                studentDataModel.SubjectLinks.Select(x => new SubjectEnrolment(x.SubjectId, x.Subject.Name))
+                    .ToList();
+            var student = new Student(studentDataModel.Id, studentDataModel.Name, subjectEnrolments);
             return student;
         }
         
@@ -51,7 +59,7 @@ namespace BCUniversity.Infrastructure.Repositories.Extensions
                 return null;
             }
             
-            var theatre = new Theatre(theatreDataModel.Name, theatreDataModel.Capacity);
+            var theatre = new Theatre(theatreDataModel.Id,theatreDataModel.Name, theatreDataModel.Capacity);
             return theatre;
         }
         

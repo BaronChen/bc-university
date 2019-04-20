@@ -5,7 +5,7 @@ namespace BCUniversity.Domain.Common
 {
     public interface IRepository<T> where T : AggregateRoot
     {
-        Task Save(T aggregate);
+        Task<string> Save(T aggregate);
         Task<T> GetById(string id);
 
         Task<IEnumerable<T>> ListAll();

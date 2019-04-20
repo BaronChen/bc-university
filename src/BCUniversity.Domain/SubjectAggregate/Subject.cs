@@ -13,7 +13,8 @@ namespace BCUniversity.Domain.SubjectAggregate
 
         public IEnumerable<StudentEnrolment> StudentEnrolments { get; }
 
-        public Subject(string name, List<Lecture> lectures, IEnumerable<StudentEnrolment> studentEnrolments)
+        public Subject(string id, string name, List<Lecture> lectures,
+            IEnumerable<StudentEnrolment> studentEnrolments) : base(id)
         {
             StudentEnrolments = studentEnrolments;
             Name = name;

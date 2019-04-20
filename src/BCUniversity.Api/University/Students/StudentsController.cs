@@ -1,5 +1,7 @@
 using System.Threading.Tasks;
 using BCUniversity.Service;
+using BCUniversity.Service.Students;
+using BCUniversity.Service.Students.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BCUniversity.Api.University.Students
@@ -32,11 +34,10 @@ namespace BCUniversity.Api.University.Students
         }
         
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]string id)
+        public async Task<IActionResult> Post([FromBody]StudentRequestDto requestDto)
         {
-            var result = await _studentService.GetStudent(id);
-
-            return Ok(result);
+            var result = await _studentService.CreateStudent(requestDto);
+            return Ok(new { Id = result });
         }
     }
 }

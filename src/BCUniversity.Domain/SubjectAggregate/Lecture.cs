@@ -7,13 +7,12 @@ namespace BCUniversity.Domain.SubjectAggregate
     {
         public string Name { get; private set; }
 
-        private readonly List<LectureSchedule> _lectureSchedules;
-        public IEnumerable<LectureSchedule> LectureSchedules => _lectureSchedules;
+        public LectureSchedule LectureSchedule { get; }
        
-        public Lecture(string name, List<LectureSchedule> lectureSchedules)
+        public Lecture(string id, string name, LectureSchedule lectureSchedule) : base(id)
         {
             Name = name;
-            _lectureSchedules = lectureSchedules;
+            LectureSchedule = lectureSchedule;
         }
     }
 }

@@ -8,7 +8,7 @@ namespace BCUniversity.Domain.TheatreAggregate
         
         public int Capacity { get; private set; }
         
-        public Theatre(string name, int capacity)
+        public Theatre(string id, string name, int capacity) : base(id)
         {
             Name = name;
             Capacity = capacity;

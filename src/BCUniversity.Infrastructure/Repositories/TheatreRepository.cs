@@ -16,7 +16,7 @@ namespace BCUniversity.Infrastructure.Repositories
         {
         }
 
-        public override async Task Save(Theatre theatre)
+        public override async Task<string> Save(Theatre theatre)
         {
             TheatreDataModel theatreDataModel = null;
             if (!string.IsNullOrWhiteSpace(theatre.Id))
@@ -28,7 +28,6 @@ namespace BCUniversity.Infrastructure.Repositories
             {
                 theatreDataModel = new TheatreDataModel()
                 {
-                    Id = Guid.NewGuid().ToString(),
                     Name = theatre.Name,
                     Capacity = theatre.Capacity
                 };
@@ -36,6 +35,7 @@ namespace BCUniversity.Infrastructure.Repositories
 
             _dbContext.Theatres.Update(theatreDataModel);
             await _dbContext.SaveChangesAsync();
+            return theatreDataModel.Id;
         }
 
         public override async Task<Theatre> GetById(string id)
@@ -50,6 +50,13 @@ namespace BCUniversity.Infrastructure.Repositories
         public override async Task<IEnumerable<Theatre>> ListAll()
         {
             var dataModels = await _dbContext.Theatres.ToListAsync();
+
+            return dataModels.Select(x => x.ToTheatreAggregate()).ToList();
+        }
+
+        public async Task<IEnumerable<Theatre>> GetByIds(IEnumerable<string> ids)
+        {
+            var dataModels = await _dbContext.Theatres.Where(x => ids.Contains(x.Id)).ToListAsync();
 
             return dataModels.Select(x => x.ToTheatreAggregate()).ToList();
         }

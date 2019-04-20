@@ -14,7 +14,7 @@ namespace BCUniversity.Infrastructure.Common
             _dbContext = dbContext;
         }
 
-        public abstract Task Save(T aggregate);
+        public abstract Task<string> Save(T aggregate);
 
         public abstract Task<T> GetById(string id);
         public abstract Task<IEnumerable<T>> ListAll();

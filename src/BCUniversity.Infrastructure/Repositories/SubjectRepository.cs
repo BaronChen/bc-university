@@ -17,7 +17,7 @@ namespace BCUniversity.Infrastructure.Repositories
         {
         }
 
-        public override async Task Save(Subject subject)
+        public override async Task<string> Save(Subject subject)
         {
             SubjectDataModel subjectDataModel = null;
             if (!string.IsNullOrWhiteSpace(subject.Id))
@@ -29,12 +29,12 @@ namespace BCUniversity.Infrastructure.Repositories
             {
                 subjectDataModel = new SubjectDataModel()
                 {
-                    Id = Guid.NewGuid().ToString(),
                     Name = subject.Name
                 };
             }
 
-            var lecturesDataModelById = subjectDataModel.Lectures.ToDictionary(x => x.Id);
+            var lecturesDataModelById = subjectDataModel.Lectures?.ToDictionary(x => x.Id) ??
+                                        new Dictionary<string, LectureDataModel>();
 
             var lectures = GetLectureDataModels(subject, lecturesDataModelById);
 
@@ -42,20 +42,29 @@ namespace BCUniversity.Infrastructure.Repositories
             
             _dbContext.Update(subjectDataModel);
             await _dbContext.SaveChangesAsync();
+            return subjectDataModel.Id;
         }
 
         public override async Task<Subject> GetById(string id)
         {
-            var dataModel = await _dbContext.Subjects.SingleOrDefaultAsync(x => x.Id == id);
+            var dataModel = await GetBaseQuery().SingleOrDefaultAsync(x => x.Id == id);
 
             return dataModel.ToSubjectAggregate();
         }
 
         public override async Task<IEnumerable<Subject>> ListAll()
         {
-            var dataModels = await _dbContext.Subjects.ToListAsync();
+            var dataModels = await GetBaseQuery().ToListAsync();
 
             return dataModels.Select(x => x.ToSubjectAggregate()).ToList();
+        }
+
+        private IQueryable<SubjectDataModel> GetBaseQuery()
+        {
+            return _dbContext.Subjects
+                .Include(x => x.Lectures)
+                .ThenInclude(l => l.LectureTheatreLink).ThenInclude(t => t.Theatre)
+                .Include(x => x.StudentLinks);
         }
 
         private static List<LectureDataModel> GetLectureDataModels(
@@ -74,19 +83,17 @@ namespace BCUniversity.Infrastructure.Repositories
                 {
                     lectureDataModel = new LectureDataModel()
                     {
-                        Id = Guid.NewGuid().ToString(),
                         Name = l.Name
                     };
                 }
 
-                lectureDataModel.LectureTheatreLinks = l.LectureSchedules.Select(ls => new LectureTheatreLink()
+                lectureDataModel.LectureTheatreLink = new LectureTheatreLink()
                 {
-                    DayOfWeek = ls.DayOfWeek,
-                    StartHour = ls.StartHour,
-                    EndHour = ls.EndHour,
-                    LectureId = l.Id,
-                    TheatreId = ls.Theatre.TheatreId
-                }).ToList();
+                    DayOfWeek = l.LectureSchedule.DayOfWeek,
+                    StartHour = l.LectureSchedule.StartHour,
+                    EndHour = l.LectureSchedule.EndHour,
+                    TheatreId = l.LectureSchedule.Theatre.TheatreId
+                };
 
                 return lectureDataModel;
             }).ToList();

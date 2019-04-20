@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BCUniversity.Infrastructure.Migrations
 {
     [DbContext(typeof(UniversityContext))]
-    [Migration("20190419101636_InitialMigration")]
+    [Migration("20190420010429_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,9 +26,11 @@ namespace BCUniversity.Infrastructure.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("StudentName");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
-                    b.Property<string>("SubjectId");
+                    b.Property<string>("SubjectId")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -50,6 +52,9 @@ namespace BCUniversity.Infrastructure.Migrations
                     b.Property<int>("StartHour");
 
                     b.HasKey("LectureId", "TheatreId");
+
+                    b.HasIndex("LectureId")
+                        .IsUnique();
 
                     b.HasIndex("TheatreId");
 
@@ -74,7 +79,8 @@ namespace BCUniversity.Infrastructure.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("StudentName");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -86,7 +92,8 @@ namespace BCUniversity.Infrastructure.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("StudentName");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -100,7 +107,8 @@ namespace BCUniversity.Infrastructure.Migrations
 
                     b.Property<int>("Capacity");
 
-                    b.Property<string>("StudentName");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -111,14 +119,15 @@ namespace BCUniversity.Infrastructure.Migrations
                 {
                     b.HasOne("BCUniversity.Infrastructure.DataModel.SubjectDataModel", "Subject")
                         .WithMany("Lectures")
-                        .HasForeignKey("SubjectId");
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("BCUniversity.Infrastructure.DataModel.Relationships.LectureTheatreLink", b =>
                 {
                     b.HasOne("BCUniversity.Infrastructure.DataModel.LectureDataModel", "Lecture")
-                        .WithMany("LectureTheatreLinks")
-                        .HasForeignKey("LectureId")
+                        .WithOne("LectureTheatreLink")
+                        .HasForeignKey("BCUniversity.Infrastructure.DataModel.Relationships.LectureTheatreLink", "LectureId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("BCUniversity.Infrastructure.DataModel.TheatreDataModel", "Theatre")

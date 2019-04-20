@@ -42,11 +42,7 @@ namespace BCUniversity.Infrastructure.Common
                 .HasForeignKey(x => x.StudentId);
 
             modelBuilder.Entity<LectureTheatreLink>()
-                .HasKey(x => new { x.LectureId, x.TheatreId });  
-            modelBuilder.Entity<LectureTheatreLink>()
-                .HasOne(x => x.Lecture)
-                .WithMany(x => x.LectureTheatreLinks)
-                .HasForeignKey(x => x.LectureId);
+                .HasKey(x => new { x.LectureId, x.TheatreId });
             modelBuilder.Entity<LectureTheatreLink>()
                 .HasOne(x => x.Theatre)
                 .WithMany(x => x.Lectures)

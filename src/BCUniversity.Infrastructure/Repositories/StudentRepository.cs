@@ -17,7 +17,7 @@ namespace BCUniversity.Infrastructure.Repositories
         {
         }
         
-        public override async Task Save(Student student)
+        public override async Task<string> Save(Student student)
         {
             StudentDataModel studentDataModel = null;
             if (!string.IsNullOrWhiteSpace(student.Id))
@@ -29,7 +29,6 @@ namespace BCUniversity.Infrastructure.Repositories
             {
                 studentDataModel = new StudentDataModel()
                 {
-                    Id = Guid.NewGuid().ToString(),
                     Name = student.Name
                 };
             }
@@ -42,11 +41,13 @@ namespace BCUniversity.Infrastructure.Repositories
 
             _dbContext.Update(studentDataModel);
             await _dbContext.SaveChangesAsync();
+
+            return studentDataModel.Id;
         }
 
         public override async Task<Student> GetById(string id)
         {
-            var studentDataModel = await _dbContext.Students.SingleOrDefaultAsync(s => s.Id == id);
+            var studentDataModel = await GetBaseQuery().SingleOrDefaultAsync(s => s.Id == id);
             var student = studentDataModel.ToStudentAggregate();
 
             return student;
@@ -54,9 +55,14 @@ namespace BCUniversity.Infrastructure.Repositories
 
         public override async Task<IEnumerable<Student>> ListAll()
         {
-            var dataModels = await _dbContext.Students.ToListAsync();
+            var dataModels = await GetBaseQuery().ToListAsync();
 
             return dataModels.Select(x => x.ToStudentAggregate()).ToList();
+        }
+        
+        private IQueryable<StudentDataModel> GetBaseQuery()
+        {
+            return _dbContext.Students.Include(x => x.SubjectLinks);
         }
     }
 }

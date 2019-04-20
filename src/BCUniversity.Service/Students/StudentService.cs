@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BCUniversity.Domain.StudentAggregate;
+using BCUniversity.Service.Students.Dtos;
 
-namespace BCUniversity.Service.Implementation
+namespace BCUniversity.Service.Students
 {
     internal class StudentService: IStudentService
     {
@@ -23,6 +25,15 @@ namespace BCUniversity.Service.Implementation
         public async Task<Student> GetStudent(string id)
         {
             return await _studentRepository.GetById(id);
+        }
+
+        public async Task<string> CreateStudent(StudentRequestDto requestDto)
+        {
+           var student = new Student(null, requestDto.Name, new List<SubjectEnrolment>());
+            
+           var id = await _studentRepository.Save(student);
+
+           return id;
         }
     }
 }

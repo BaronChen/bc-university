@@ -15,7 +15,7 @@ namespace BCUniversity.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -28,7 +28,7 @@ namespace BCUniversity.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -41,7 +41,7 @@ namespace BCUniversity.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: false),
                     Capacity = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -55,8 +55,8 @@ namespace BCUniversity.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    SubjectId = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: false),
+                    SubjectId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -67,7 +67,7 @@ namespace BCUniversity.Infrastructure.Migrations
                         principalSchema: "uni",
                         principalTable: "subject",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -132,6 +132,13 @@ namespace BCUniversity.Infrastructure.Migrations
                 schema: "uni",
                 table: "lecture",
                 column: "SubjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_lecture_theatre_relationship_LectureId",
+                schema: "uni",
+                table: "lecture_theatre_relationship",
+                column: "LectureId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_lecture_theatre_relationship_TheatreId",
