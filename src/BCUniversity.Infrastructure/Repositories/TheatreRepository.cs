@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BCUniversity.Domain.TheatreAggregate;
 using BCUniversity.Infrastructure.Common;
 using BCUniversity.Infrastructure.DataModel;
+using BCUniversity.Infrastructure.Repositories.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace BCUniversity.Infrastructure.Repositories
@@ -39,10 +41,17 @@ namespace BCUniversity.Infrastructure.Repositories
         public override async Task<Theatre> GetById(string id)
         {
             var theatreDataModel = await _dbContext.Theatres.SingleOrDefaultAsync(x => x.Id == id);
-            
-            var theatre = new Theatre(theatreDataModel.Name, theatreDataModel.Capacity);
+
+            var theatre = theatreDataModel.ToTheatreAggregate();
 
             return theatre;
+        }
+
+        public override async Task<IEnumerable<Theatre>> ListAll()
+        {
+            var dataModels = await _dbContext.Theatres.ToListAsync();
+
+            return dataModels.Select(x => x.ToTheatreAggregate()).ToList();
         }
     }
 }

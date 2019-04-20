@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BCUniversity.Infrastructure;
+using BCUniversity.Infrastructure.Common;
+using BCUniversity.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,6 +29,12 @@ namespace BCUniversity.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.Configure<DbSettings>(options =>
+            {
+                options.ConnectionString = Configuration.GetSection("Postgres:ConnectionString").Value;
+            });
+            services.RegisterService();
+            services.RegisterInfrastructure();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

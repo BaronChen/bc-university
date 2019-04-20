@@ -6,6 +6,7 @@ using BCUniversity.Domain.SubjectAggregate;
 using BCUniversity.Infrastructure.Common;
 using BCUniversity.Infrastructure.DataModel;
 using BCUniversity.Infrastructure.DataModel.Relationships;
+using BCUniversity.Infrastructure.Repositories.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace BCUniversity.Infrastructure.Repositories
@@ -47,28 +48,16 @@ namespace BCUniversity.Infrastructure.Repositories
         {
             var dataModel = await _dbContext.Subjects.SingleOrDefaultAsync(x => x.Id == id);
 
-            if (dataModel == null)
-            {
-                return null;
-            }
-            
-            var lectures = dataModel.Lectures.Select(l =>
-            {
-                var lectureSchedules = l.LectureTheatreLinks.Select(x =>
-                    new LectureSchedule(new TheatreReference(x.TheatreId, x.Theatre.Name, x.Theatre.Capacity),
-                        x.DayOfWeek, x.StartHour, x.EndHour)).ToList();
-                
-                return new Lecture(l.Name, lectureSchedules);
-            }).ToList();
-
-            var studentEnrolments =
-                dataModel.StudentLinks.Select(x => new StudentEnrolment(x.Student.Id, x.Student.Name)).ToList();
-
-            var subject = new Subject(dataModel.Name, lectures, studentEnrolments);
-
-            return subject;
+            return dataModel.ToSubjectAggregate();
         }
-        
+
+        public override async Task<IEnumerable<Subject>> ListAll()
+        {
+            var dataModels = await _dbContext.Subjects.ToListAsync();
+
+            return dataModels.Select(x => x.ToSubjectAggregate()).ToList();
+        }
+
         private static List<LectureDataModel> GetLectureDataModels(
             Subject subject,
             Dictionary<string, LectureDataModel> lecturesDataModelById

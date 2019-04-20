@@ -1,4 +1,5 @@
 using BCUniversity.Domain.StudentAggregate;
+using BCUniversity.Domain.TheatreAggregate;
 using BCUniversity.Infrastructure.DataModel;
 using BCUniversity.Infrastructure.DataModel.Relationships;
 using Microsoft.EntityFrameworkCore;

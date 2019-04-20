@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BCUniversity.Domain.StudentAggregate;
 using BCUniversity.Infrastructure.Common;
 using BCUniversity.Infrastructure.DataModel;
 using BCUniversity.Infrastructure.DataModel.Relationships;
+using BCUniversity.Infrastructure.Repositories.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace BCUniversity.Infrastructure.Repositories
@@ -45,11 +47,16 @@ namespace BCUniversity.Infrastructure.Repositories
         public override async Task<Student> GetById(string id)
         {
             var studentDataModel = await _dbContext.Students.SingleOrDefaultAsync(s => s.Id == id);
-            var subjectEnrolments =
-                studentDataModel.SubjectLinks.Select(x => new SubjectEnrolment(x.SubjectId, x.Subject.Name)).ToList();
-            var student = new Student(studentDataModel.Name, subjectEnrolments);
+            var student = studentDataModel.ToStudentAggregate();
 
             return student;
+        }
+
+        public override async Task<IEnumerable<Student>> ListAll()
+        {
+            var dataModels = await _dbContext.Students.ToListAsync();
+
+            return dataModels.Select(x => x.ToStudentAggregate()).ToList();
         }
     }
 }

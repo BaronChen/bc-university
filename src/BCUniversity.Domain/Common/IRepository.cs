@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BCUniversity.Domain.Common
@@ -6,5 +7,7 @@ namespace BCUniversity.Domain.Common
     {
         Task Save(T aggregate);
         Task<T> GetById(string id);
+
+        Task<IEnumerable<T>> ListAll();
     }
 }
