@@ -61,8 +61,8 @@ namespace BCUniversity.Api.University.Subjects
         [Route("{id}/students")]
         public async Task<IActionResult> GetStudents([FromRoute]string id)
         {
-            await _subjectService.GetStudentsForSubject(id);
-            return Ok();
+           var result =  await _subjectService.GetStudentsForSubject(id);
+            return Ok(result);
         }
 
     }
