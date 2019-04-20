@@ -1,4 +1,4 @@
-namespace BCUniversity.Service.Theatres.Dtos
+namespace BCUniversity.Service.Dtos.Requests
 {
     public class TheatreRequestDto
     {

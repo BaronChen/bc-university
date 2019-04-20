@@ -1,6 +1,6 @@
-namespace BCUniversity.Service.Students.Dtos
+namespace BCUniversity.Service.Dtos.Requests
 {
-    public class EnrolmentDto
+    public class EnrolmentRequestDto
     {
         public string StudentId { get; set; }
         public string SubjectId { get; set; }

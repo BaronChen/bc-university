@@ -1,4 +1,4 @@
-namespace BCUniversity.Service.Subjects.Dtos
+namespace BCUniversity.Service.Dtos.Requests
 {
     public class LectureScheduleRequestDto
     {

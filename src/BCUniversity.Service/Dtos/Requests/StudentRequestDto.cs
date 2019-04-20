@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-
-namespace BCUniversity.Service.Students.Dtos
+namespace BCUniversity.Service.Dtos.Requests
 {
     public class StudentRequestDto
     {        

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BCUniversity.Domain.TheatreAggregate;
-using BCUniversity.Service.Theatres.Dtos;
+using BCUniversity.Service.Dtos.Requests;
 
 namespace BCUniversity.Service.Theatres
 {

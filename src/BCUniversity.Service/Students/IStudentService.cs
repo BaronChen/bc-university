@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BCUniversity.Domain.StudentAggregate;
-using BCUniversity.Service.Students.Dtos;
+using BCUniversity.Service.Dtos.Requests;
 
 namespace BCUniversity.Service.Students
 {

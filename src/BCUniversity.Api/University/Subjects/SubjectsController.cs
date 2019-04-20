@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
+using BCUniversity.Service.Dtos;
+using BCUniversity.Service.Dtos.Requests;
 using BCUniversity.Service.Subjects;
-using BCUniversity.Service.Subjects.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BCUniversity.Api.University.Subjects

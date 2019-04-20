@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BCUniversity.Domain.DomainService;
 using BCUniversity.Domain.StudentAggregate;
-using BCUniversity.Service.Students.Dtos;
+using BCUniversity.Service.Dtos.Requests;
 
 namespace BCUniversity.Service.Students
 {
@@ -38,11 +38,11 @@ namespace BCUniversity.Service.Students
            return id;
         }
 
-        public async Task<Student> EnrolStudentToSubject(EnrolmentDto dto)
+        public async Task<Student> EnrolStudentToSubject(EnrolmentRequestDto requestDto)
         {
-            await _universityDomainService.EnrolStudentToSubject(dto.StudentId, dto.SubjectId);
+            await _universityDomainService.EnrolStudentToSubject(requestDto.StudentId, requestDto.SubjectId);
 
-            return await _studentRepository.GetById(dto.StudentId);
+            return await _studentRepository.GetById(requestDto.StudentId);
         }
     }
 }

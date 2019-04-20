@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BCUniversity.Domain.SubjectAggregate;
-using BCUniversity.Service.Subjects.Dtos;
+using BCUniversity.Service.Dtos;
+using BCUniversity.Service.Dtos.Requests;
 
 namespace BCUniversity.Service.Subjects
 {

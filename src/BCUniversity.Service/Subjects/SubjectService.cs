@@ -6,8 +6,9 @@ using BCUniversity.Domain.DomainService;
 using BCUniversity.Domain.Exceptions;
 using BCUniversity.Domain.SubjectAggregate;
 using BCUniversity.Domain.TheatreAggregate;
+using BCUniversity.Service.Dtos;
+using BCUniversity.Service.Dtos.Requests;
 using BCUniversity.Service.Exceptions;
-using BCUniversity.Service.Subjects.Dtos;
 using BCUniversity.Service.Theatres;
 
 namespace BCUniversity.Service.Subjects
