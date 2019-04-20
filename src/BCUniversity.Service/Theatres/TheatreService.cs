@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BCUniversity.Domain.TheatreAggregate;
+using BCUniversity.Service.Dtos;
 using BCUniversity.Service.Dtos.Requests;
 
 namespace BCUniversity.Service.Theatres
@@ -14,9 +16,9 @@ namespace BCUniversity.Service.Theatres
             _theatreRepository = theatreRepository;
         }
 
-        public async Task<IEnumerable<Theatre>> GetTheatres()
+        public async Task<IEnumerable<TheatreDto>> GetTheatres()
         {
-            return await _theatreRepository.ListAll();
+            return (await _theatreRepository.ListAll()).Select(x => x.ToTheatreDto()).ToList();
         }
 
         public async Task<string> CreateTheatre(TheatreRequestDto requestDto)
@@ -28,9 +30,9 @@ namespace BCUniversity.Service.Theatres
             return id;
         }
 
-        public async Task<Theatre> GetTheatre(string id)
+        public async Task<TheatreDto> GetTheatre(string id)
         {
-            return await _theatreRepository.GetById(id);
+            return (await _theatreRepository.GetById(id)).ToTheatreDto();
         }
     }
 }

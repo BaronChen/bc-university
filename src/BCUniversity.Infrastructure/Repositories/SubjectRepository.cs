@@ -33,7 +33,8 @@ namespace BCUniversity.Infrastructure.Repositories
                 };
             }
 
-            var lecturesDataModelById = subjectDataModel.Lectures.ToDictionary(x => x.Id);
+            var lecturesDataModelById = subjectDataModel.Lectures?.ToDictionary(x => x.Id) ??
+                                        new Dictionary<string, LectureDataModel>();
             
             var lectures = GetLectureDataModels(subject, lecturesDataModelById);
 
@@ -63,7 +64,8 @@ namespace BCUniversity.Infrastructure.Repositories
             return _dbContext.Subjects
                 .Include(x => x.Lectures)
                 .ThenInclude(l => l.LectureTheatreLink).ThenInclude(t => t.Theatre)
-                .Include(x => x.StudentLinks);
+                .Include(x => x.StudentLinks)
+                .ThenInclude(x => x.Student);
         }
 
         private static List<LectureDataModel> GetLectureDataModels(

@@ -3,7 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using BCUniversity.Domain.DomainService;
 using BCUniversity.Domain.StudentAggregate;
+using BCUniversity.Service.Dtos;
 using BCUniversity.Service.Dtos.Requests;
+using BCUniversity.Service.Exceptions;
 
 namespace BCUniversity.Service.Students
 {
@@ -19,14 +21,14 @@ namespace BCUniversity.Service.Students
             _universityDomainService = universityDomainService;
         }
         
-        public async Task<IEnumerable<Student>> GetStudents()
+        public async Task<IEnumerable<StudentDto>> GetStudents()
         {
-            return await _studentRepository.ListAll();
+            return (await _studentRepository.ListAll()).Select(x => x.ToStudentDto()).ToList();
         }
 
-        public async Task<Student> GetStudent(string id)
+        public async Task<StudentDto> GetStudent(string id)
         {
-            return await _studentRepository.GetById(id);
+            return (await _studentRepository.GetById(id)).ToStudentDto();
         }
 
         public async Task<string> CreateStudent(StudentRequestDto requestDto)
@@ -38,11 +40,21 @@ namespace BCUniversity.Service.Students
            return id;
         }
 
-        public async Task<Student> EnrolStudentToSubject(EnrolmentRequestDto requestDto)
+        public async Task EnrolStudentToSubject(string studentId, EnrolmentRequestDto requestDto)
         {
-            await _universityDomainService.EnrolStudentToSubject(requestDto.StudentId, requestDto.SubjectId);
+            await _universityDomainService.EnrolStudentToSubject(studentId, requestDto.SubjectId);
+        }
 
-            return await _studentRepository.GetById(requestDto.StudentId);
+        public async Task<IEnumerable<EnrolmentDto>> GetEnrolments(string studentId)
+        {
+            var student = await _studentRepository.GetById(studentId);
+
+            if (student == null)
+            {
+                throw new ResourceNotFoundException($"Cannot found student id {studentId}");
+            }
+
+            return student.SubjectEnrolments.Select(x => x.ToEnrolmentDto()).ToList();
         }
     }
 }

@@ -41,11 +41,19 @@ namespace BCUniversity.Api.University.Students
         }
         
         [HttpPost]
-        [Route("{id}/")]
-        public async Task<IActionResult> Enrol([FromBody]StudentRequestDto requestDto)
+        [Route("{id}/enrolments")]
+        public async Task<IActionResult> Enrol([FromRoute]string id, [FromBody]EnrolmentRequestDto requestDto)
         {
-            var result = await _studentService.CreateStudent(requestDto);
-            return Ok(new { Id = result });
+            await _studentService.EnrolStudentToSubject(id, requestDto);
+            return Ok();
+        }
+        
+        [HttpGet]
+        [Route("{id}/enrolments")]
+        public async Task<IActionResult> Enrol([FromRoute]string id)
+        {
+            var result = await _studentService.GetEnrolments(id);
+            return Ok(result);
         }
     }
 }

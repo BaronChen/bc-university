@@ -56,6 +56,14 @@ namespace BCUniversity.Api.University.Subjects
             await _subjectService.CreateLectureForSubject(id, requestDto);
             return Ok();
         }
+        
+        [HttpGet]
+        [Route("{id}/students")]
+        public async Task<IActionResult> GetStudents([FromRoute]string id)
+        {
+            await _subjectService.GetStudentsForSubject(id);
+            return Ok();
+        }
 
     }
 }

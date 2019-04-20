@@ -48,7 +48,7 @@ namespace BCUniversity.Infrastructure.Repositories.Extensions
             var subjectEnrolments =
                 studentDataModel.SubjectLinks.Select(x =>
                         new SubjectEnrolment(x.SubjectId, x.Subject.Name,
-                            x.Subject.Lectures.Min(l => l.LectureTheatreLink.EndHour - l.LectureTheatreLink.StartHour))
+                            x.Subject.Lectures.Sum(l => l.LectureTheatreLink.EndHour - l.LectureTheatreLink.StartHour))
                     ).ToList();
             var student = new Student(studentDataModel.Id, studentDataModel.Name, subjectEnrolments);
             return student;

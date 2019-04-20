@@ -29,7 +29,7 @@ namespace BCUniversity.Domain.SubjectAggregate
 
         public int GetCapacity()
         {
-            return LectureSchedule.Theatre.Capacity ?? 0;
+            return LectureSchedule.Theatre.Capacity;
         }
     }
 }

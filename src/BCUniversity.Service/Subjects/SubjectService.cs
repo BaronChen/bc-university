@@ -31,14 +31,14 @@ namespace BCUniversity.Service.Subjects
             _theatreRepository = theatreRepository;
         }
 
-        public async Task<IEnumerable<Subject>> GetSubjects()
+        public async Task<IEnumerable<SubjectDto>> GetSubjects()
         {
-            return await _subjectRepository.ListAll();
+            return (await _subjectRepository.ListAll()).Select(x => x.ToSubjectDto()).ToList();
         }
 
-        public async Task<Subject> GetSubjectById(string id)
+        public async Task<SubjectDto> GetSubjectById(string id)
         {
-            return await _subjectRepository.GetById(id);
+            return (await _subjectRepository.GetById(id)).ToSubjectDto();
         }
 
         public async Task<string> CreateSubject(SubjectRequestDto requestDto)
@@ -52,12 +52,7 @@ namespace BCUniversity.Service.Subjects
         
         public async Task CreateLectureForSubject(string subjectId, LectureRequestDto requestDto)
         {
-            var subject = await _subjectRepository.GetById(subjectId);
-
-            if (subject == null)
-            {
-                throw new InvalidInputException($"Invalid subject id {subjectId}");
-            }
+            var subject = await GetSubject(subjectId);
 
             var theatreReference = await GetTheatreReference(requestDto.LectureSchedule.TheatreId);
             var lectureSchedule = new LectureSchedule(
@@ -73,15 +68,19 @@ namespace BCUniversity.Service.Subjects
             await _subjectRepository.Save(subject);
         }
 
-        public async Task<IEnumerable<Lecture>> GetLecturesForSubject(string subjectId)
+       
+        public async Task<IEnumerable<LectureDto>> GetLecturesForSubject(string subjectId)
         {
-            var subject = await _subjectRepository.GetById(subjectId);
-            if (subject == null)
-            {
-                throw new ResourceNotFoundException($"Cannot found subject {subjectId}");
-            }
+            var subject = await GetSubject(subjectId);
 
-            return subject.Lectures;
+            return subject.Lectures.Select(x => x.ToLectureDto()).ToList();
+        }
+
+        public async Task<IEnumerable<StudentDto>> GetStudentsForSubject(string subjectId)
+        {
+            var subject = await GetSubject(subjectId);
+
+            return subject.StudentEnrolments.Select(x => x.ToStudentDto()).ToList();
         }
 
         private async Task<TheatreReference> GetTheatreReference(string theatreId)
@@ -95,5 +94,18 @@ namespace BCUniversity.Service.Subjects
 
             return new TheatreReference(theatre.Id, theatre.Name, theatre.Capacity);
         }
+        
+        private async Task<Subject> GetSubject(string subjectId)
+        {
+            var subject = await _subjectRepository.GetById(subjectId);
+
+            if (subject == null)
+            {
+                throw new ResourceNotFoundException($"Cannot found subject id {subjectId}");
+            }
+
+            return subject;
+        }
+
     }
 }

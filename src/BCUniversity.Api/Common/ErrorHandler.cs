@@ -38,7 +38,7 @@ namespace BCUniversity.Api.Common
                 }
                 else
                 {
-                    response.StatusCode = (int)HttpStatusCode.InternalServerError;    
+                    throw;
                 }
                 
                 await response.WriteAsync(JsonConvert.SerializeObject(new 

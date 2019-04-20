@@ -8,15 +8,17 @@ namespace BCUniversity.Service.Subjects
 {
     public interface ISubjectService
     {
-        Task<IEnumerable<Subject>> GetSubjects();
+        Task<IEnumerable<SubjectDto>> GetSubjects();
 
-        Task<Subject> GetSubjectById(string id);
+        Task<SubjectDto> GetSubjectById(string id);
 
         Task<string> CreateSubject(SubjectRequestDto requestDto);
 
         Task CreateLectureForSubject(string subjectId, LectureRequestDto requestDto);
 
-        Task<IEnumerable<Lecture>> GetLecturesForSubject(string subjectId);
+        Task<IEnumerable<LectureDto>> GetLecturesForSubject(string subjectId);
+
+        Task<IEnumerable<StudentDto>> GetStudentsForSubject(string subjectId);
 
     }
 }
