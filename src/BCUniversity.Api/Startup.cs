@@ -58,7 +58,7 @@ namespace BCUniversity.Api
             }
 
             app.UseMiddleware<ErrorHandler>();
-            app.UseHttpsRedirection();
+//            app.UseHttpsRedirection();
             app.UseMvc();
         }
     }
